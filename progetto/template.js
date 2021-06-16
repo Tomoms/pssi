@@ -1,4 +1,4 @@
-const base = "https://script.google.com/macros/s/AKfycbx0uZv2hur7IIFIO9vl0z2rteLcGbmA8ZIpabdi1XcLXnfsLXVnsKihd8QQMgly5zAN/exec?GSheet=https://docs.google.com/spreadsheets/d/1OUjljb3Xa-9ZKMXsmWBFYooffbRPLKAIwIGLXDDPLAE/edit"
+const base = "https://script.google.com/macros/s/AKfycbxRfgB25xhkN6xLvTuwRA7bvPcTYCLdsoDI9VlH4REXXLv3kdMd6BIjm6mg9EDUppGd/exec?GSheet=https://docs.google.com/spreadsheets/d/1OUjljb3Xa-9ZKMXsmWBFYooffbRPLKAIwIGLXDDPLAE/edit"
 
 function updateEditButtons() {
    const elements = document.getElementsByClassName('awt-button edit');
@@ -13,7 +13,10 @@ function updateEditButtons() {
 
 async function getUpdatableCols(key) {
     let url = base + "&type=getFields&key=" + key;
-    let response = await fetch(url);
+    let response = await fetch(url, {
+        method: 'GET',
+        //credentials: 'include',
+    });
     let result = await response.text();
     let asString = String(result);
     let cols = asString.split(',');
@@ -63,7 +66,10 @@ async function saveElement() {
     for (let i = 0; i < fields.length; i++) {
         updated += "&" + fields[i].name + "=" + fields[i].value;
     }
-    let response = await fetch(updated);
+    let response = await fetch(updated, {
+        method: 'GET',
+        //credentials: 'include'
+    });
     let result = await response.text();
     if (String(result) != "") {
         alert(String(result));
@@ -77,7 +83,10 @@ async function deleteElement() {
     let keyEl = document.getElementById("hiddenKey");
     let key = keyEl.innerHTML;
     let url = base + "&type=deleteElement&key=" + key
-    let response = await fetch(url);
+    let response = await fetch(url, {
+        method: 'GET',
+        //credentials: 'include'
+    });
     let result = await response.text();
     if (String(result) != "") {
         alert(String(result));
